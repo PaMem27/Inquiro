@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inquiro"
+version = "0.1.0"
+description = "An agentic RAG assistant for exploring any research topic through arXiv papers."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "arxiv",
+    "langchain",
+    "langchain-chroma",
+    "langchain-cohere",
+    "langchain-huggingface",
+    "langchain-text-splitters",
+    "langgraph",
+    "pypdf",
+    "python-dotenv",
+    "requests",
+    "sentence-transformers",
+]
+
+[project.scripts]
+inquiro = "inquiro.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["inquiro*"]
