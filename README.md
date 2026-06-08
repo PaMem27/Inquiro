@@ -2,7 +2,7 @@
 
 Inquiro is an agentic RAG assistant that lets you explore any research topic through arXiv papers. Enter a topic, and it automatically downloads related papers, builds a searchable vector index, then answers your questions with grounded, source-cited responses.
 
-![Inquiro demo](assets/demo.png)
+![Inquiro demo](assets/demo.gif)
 
 ## How it works
 
