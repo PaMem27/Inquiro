@@ -16,9 +16,12 @@ from inquiro.graph import build_graph
 from inquiro.titles import iter_backfill_titles, load_titles, resolve_source, untitled_pdfs
 from inquiro.utils import source_names
 
-# Papers to pull from arXiv on first-run setup. Kept demo-friendly so a fresh
-# clone (or a free-tier deployment) finishes indexing in a couple of minutes.
-MAX_PAPERS = 40
+# Bounds and default for how many arXiv papers to fetch on first-run setup.
+# The default is demo-friendly (a fresh clone indexes in a couple of minutes),
+# but the user picks the actual count on the setup screen.
+DEFAULT_PAPERS = 40
+MIN_PAPERS = 5
+MAX_PAPERS = 200
 
 ROUTE_COLORS = {
     "definition": "#2e7d32",
@@ -92,15 +95,24 @@ with st.sidebar:
 if not corpus_ready():
     st.subheader("📚 First-time Setup")
     st.markdown(
-        "No paper corpus found. Enter a research topic and Inquiro will "
-        f"fetch up to **{MAX_PAPERS} papers** from arXiv, read them, and build a "
-        "searchable vector index — then unlock the chat."
+        "No paper corpus found. Enter a research topic and choose how many "
+        "papers to pull from arXiv. Inquiro will download them, read them, and "
+        "build a searchable vector index — then unlock the chat."
     )
 
     topic = st.text_input(
         "Research topic",
         placeholder="e.g. structured pruning transformer language models",
         help="Used as the arXiv search query.",
+    )
+
+    num_papers = st.slider(
+        "Number of papers to fetch",
+        min_value=MIN_PAPERS,
+        max_value=MAX_PAPERS,
+        value=DEFAULT_PAPERS,
+        step=5,
+        help="More papers means broader coverage but a longer first-run build.",
     )
 
     if st.button("🚀 Build Corpus", type="primary", disabled=not topic.strip()):
@@ -113,7 +125,7 @@ if not corpus_ready():
             downloaded = skipped = failed = 0
 
             for idx, total, paper_id, title, result in iter_download_papers(
-                topic, max_results=MAX_PAPERS
+                topic, max_results=num_papers
             ):
                 if result == "downloaded":
                     downloaded += 1

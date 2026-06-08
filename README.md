@@ -6,7 +6,7 @@ Inquiro is an agentic RAG assistant that lets you explore any research topic thr
 
 ## How it works
 
-1. **Setup** — You enter a research topic. Inquiro fetches up to 40 papers from arXiv, reads them, and indexes them into a local ChromaDB vector store.
+1. **Setup** — You enter a research topic and choose how many papers to fetch (5–200, default 40). Inquiro downloads them from arXiv, reads them, and indexes them into a local ChromaDB vector store.
 2. **Routing** — Each question is classified into one of three retrieval strategies:
    - `definition` — explain a concept
    - `comparison` — contrast methods or papers
