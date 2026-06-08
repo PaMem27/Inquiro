@@ -12,7 +12,7 @@ dependencies = [
     "arxiv",
     "langchain",
     "langchain-chroma",
-    "langchain-cohere",
+    "langchain-google-genai",
     "langchain-huggingface",
     "langchain-text-splitters",
     "langgraph",

@@ -1,6 +1,6 @@
 from typing import cast
 
-from langchain_cohere import ChatCohere
+from langchain_core.language_models.chat_models import BaseChatModel
 
 from inquiro.state import RAGState, Route
 from inquiro.utils import content_to_text
@@ -20,7 +20,7 @@ def normalize_route(raw_route: str) -> Route:
     return "definition"
 
 
-def route_question(llm: ChatCohere, state: RAGState) -> RAGState:
+def route_question(llm: BaseChatModel, state: RAGState) -> RAGState:
     prompt = f"""
 Classify this research-paper question into exactly one category:
 

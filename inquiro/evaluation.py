@@ -1,6 +1,6 @@
 import re
 
-from langchain_cohere import ChatCohere
+from langchain_core.language_models.chat_models import BaseChatModel
 
 from inquiro.state import RAGState
 from inquiro.utils import content_to_text, format_docs
@@ -25,7 +25,7 @@ def parse_score(text: str) -> str:
     return "FAIL"
 
 
-def evaluate_answer(llm: ChatCohere, state: RAGState) -> RAGState:
+def evaluate_answer(llm: BaseChatModel, state: RAGState) -> RAGState:
     prompt = f"""
 Evaluate the answer against the retrieved context.
 

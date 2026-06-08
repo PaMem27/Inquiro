@@ -1,7 +1,7 @@
 from functools import partial
 
 from langchain_chroma import Chroma
-from langchain_cohere import ChatCohere
+from langchain_core.language_models.chat_models import BaseChatModel
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
@@ -17,7 +17,7 @@ from inquiro.routing import choose_retriever, route_question
 from inquiro.state import RAGState
 
 
-def build_graph(llm: ChatCohere | None = None, vectorstore: Chroma | None = None):
+def build_graph(llm: BaseChatModel | None = None, vectorstore: Chroma | None = None):
     llm = llm or build_llm()
     vectorstore = vectorstore or build_vectorstore()
 

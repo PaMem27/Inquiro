@@ -5,4 +5,4 @@ PAPERS_DIR = PROJECT_ROOT / "papers"
 CHROMA_DIR = PROJECT_ROOT / "chroma_db"
 
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-COHERE_MODEL = "command-a-plus-05-2026"
+LLM_MODEL = "gemini-2.5-flash"

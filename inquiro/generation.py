@@ -1,12 +1,12 @@
-from langchain_cohere import ChatCohere
+from langchain_core.language_models.chat_models import BaseChatModel
 
 from inquiro.state import RAGState
 from inquiro.utils import content_to_text, format_docs
 
 
-def generate_answer(llm: ChatCohere, state: RAGState) -> RAGState:
+def generate_answer(llm: BaseChatModel, state: RAGState) -> RAGState:
     prompt = f"""
-You are PaperMind, a research assistant for pruning papers.
+You are Inquiro, a research assistant for academic papers.
 
 Question type: {state["route"]}
 
