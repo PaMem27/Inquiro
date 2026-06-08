@@ -16,6 +16,10 @@ from inquiro.graph import build_graph
 from inquiro.titles import iter_backfill_titles, load_titles, resolve_source, untitled_pdfs
 from inquiro.utils import source_names
 
+# Papers to pull from arXiv on first-run setup. Kept demo-friendly so a fresh
+# clone (or a free-tier deployment) finishes indexing in a couple of minutes.
+MAX_PAPERS = 40
+
 ROUTE_COLORS = {
     "definition": "#2e7d32",
     "method": "#1565c0",
@@ -89,7 +93,7 @@ if not corpus_ready():
     st.subheader("📚 First-time Setup")
     st.markdown(
         "No paper corpus found. Enter a research topic and Inquiro will "
-        "fetch up to **200 papers** from arXiv, read them, and build a "
+        f"fetch up to **{MAX_PAPERS} papers** from arXiv, read them, and build a "
         "searchable vector index — then unlock the chat."
     )
 
@@ -109,7 +113,7 @@ if not corpus_ready():
             downloaded = skipped = failed = 0
 
             for idx, total, paper_id, title, result in iter_download_papers(
-                topic, max_results=200
+                topic, max_results=MAX_PAPERS
             ):
                 if result == "downloaded":
                     downloaded += 1

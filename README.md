@@ -1,10 +1,12 @@
 # Inquiro
 
-Inquiro is an agentic RAG assistant that lets you explore any research topic through arXiv papers. Enter a topic, and it automatically downloads up to 200 related papers, builds a searchable vector index, then answers your questions with grounded, source-cited responses.
+Inquiro is an agentic RAG assistant that lets you explore any research topic through arXiv papers. Enter a topic, and it automatically downloads related papers, builds a searchable vector index, then answers your questions with grounded, source-cited responses.
+
+![Inquiro demo](assets/demo.png)
 
 ## How it works
 
-1. **Setup** — You enter a research topic. Inquiro fetches up to 200 papers from arXiv, reads them, and indexes them into a local ChromaDB vector store.
+1. **Setup** — You enter a research topic. Inquiro fetches up to 40 papers from arXiv, reads them, and indexes them into a local ChromaDB vector store.
 2. **Routing** — Each question is classified into one of three retrieval strategies:
    - `definition` — explain a concept
    - `comparison` — contrast methods or papers
@@ -47,8 +49,8 @@ app.py              # Streamlit chat UI
 ## Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/inquiro.git
-cd inquiro
+git clone https://github.com/PaMem27/Inquiro.git
+cd Inquiro
 python -m venv venv
 source venv/bin/activate      # Windows: venv\Scripts\activate
 pip install -r requirements.txt
