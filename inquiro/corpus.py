@@ -63,6 +63,18 @@ def mark_corpus_ready(topic: str, paper_count: int, chroma_dir: Path = CHROMA_DI
     (chroma_dir / READY_SENTINEL_NAME).write_text(f"{topic}\n{paper_count}")
 
 
+def sanitize_text(text: str) -> str:
+    """Strip characters the (Rust) tokenizer rejects during embedding.
+
+    PDF extraction can yield lone surrogate code points (e.g. ``\\ud835`` from
+    mathematical/bold glyphs) and null bytes. These are valid Python ``str`` but
+    cannot be UTF-8 encoded, so the tokenizer raises ``TextEncodeInput must be
+    Union[...]``. Round-tripping through UTF-8 with ``errors="ignore"`` drops
+    them while leaving normal text untouched.
+    """
+    return text.encode("utf-8", "ignore").decode("utf-8", "ignore").replace("\x00", "")
+
+
 def extract_pdf_text(pdf_path: Path) -> str:
     text_parts: list[str] = []
     with pdf_path.open("rb") as file:
@@ -71,7 +83,7 @@ def extract_pdf_text(pdf_path: Path) -> str:
             text = page.extract_text()
             if text:
                 text_parts.append(text)
-    return "\n".join(text_parts)
+    return sanitize_text("\n".join(text_parts))
 
 
 def load_papers(papers_dir: Path = PAPERS_DIR) -> list[Document]:
@@ -98,12 +110,17 @@ def split_papers(
         chunk_overlap=chunk_overlap,
     )
     chunks = splitter.split_documents(papers)
-    # Drop empty/whitespace-only or non-string chunks so they never reach the
-    # tokenizer, which rejects them (TextEncodeInput error) during embedding.
-    return [
-        c for c in chunks
-        if isinstance(c.page_content, str) and c.page_content.strip()
-    ]
+    # Defense in depth: sanitize each chunk and drop empty/non-string ones so
+    # nothing the tokenizer rejects (lone surrogates, null bytes, empties) can
+    # reach the embedding step.
+    cleaned: list[Document] = []
+    for c in chunks:
+        if not isinstance(c.page_content, str):
+            continue
+        c.page_content = sanitize_text(c.page_content)
+        if c.page_content.strip():
+            cleaned.append(c)
+    return cleaned
 
 
 def ingest_papers(
