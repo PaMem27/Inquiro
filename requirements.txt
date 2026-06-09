@@ -14,7 +14,11 @@ langgraph==1.2.4
 
 # Vector store, embeddings, and LLM
 chromadb==1.5.9
-sentence-transformers
+# Embedding stack pinned to a verified-compatible set; newer combinations have
+# broken batch tokenization (TextEncodeInput error) during ingestion.
+sentence-transformers==5.5.1
+transformers==5.10.1
+tokenizers==0.22.2
 
 # Config and UI
 python-dotenv==0.21.0

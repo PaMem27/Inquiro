@@ -97,7 +97,13 @@ def split_papers(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
     )
-    return splitter.split_documents(papers)
+    chunks = splitter.split_documents(papers)
+    # Drop empty/whitespace-only or non-string chunks so they never reach the
+    # tokenizer, which rejects them (TextEncodeInput error) during embedding.
+    return [
+        c for c in chunks
+        if isinstance(c.page_content, str) and c.page_content.strip()
+    ]
 
 
 def ingest_papers(
