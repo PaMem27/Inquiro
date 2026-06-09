@@ -12,13 +12,13 @@ Inquiro is an agentic RAG assistant that lets you explore any research topic thr
    - `comparison` — contrast methods or papers
    - `method` — explain how something works step by step
 3. **Retrieval** — The appropriate retriever runs a tailored similarity search.
-4. **Generation** — A Gemini LLM generates a grounded answer from the retrieved chunks.
+4. **Generation** — A Groq-hosted LLM generates a grounded answer from the retrieved chunks.
 5. **Evaluation** — An evaluator node checks whether the answer is supported by the context and returns a PASS/FAIL score with feedback.
 
 ## Stack
 
 - **Orchestration:** LangGraph
-- **LLM:** Google Gemini (`gemini-2.5-flash`)
+- **LLM:** Groq (`llama-3.3-70b-versatile`)
 - **Embeddings:** HuggingFace (`sentence-transformers/all-MiniLM-L6-v2`)
 - **Vector store:** ChromaDB
 - **UI:** Streamlit
@@ -56,11 +56,11 @@ source venv/bin/activate      # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Create a `.env` file with your Google AI Studio API key (free at
-[aistudio.google.com/apikey](https://aistudio.google.com/apikey)):
+Create a `.env` file with your Groq API key (free at
+[console.groq.com/keys](https://console.groq.com/keys)):
 
 ```
-GOOGLE_API_KEY=your_key_here
+GROQ_API_KEY=your_key_here
 ```
 
 ## Run the app

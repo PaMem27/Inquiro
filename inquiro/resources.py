@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_huggingface import HuggingFaceEmbeddings
 
 from inquiro.config import CHROMA_DIR, EMBEDDING_MODEL, LLM_MODEL
@@ -21,4 +21,4 @@ def build_vectorstore() -> Chroma:
 
 def build_llm() -> BaseChatModel:
     load_dotenv()
-    return ChatGoogleGenerativeAI(model=LLM_MODEL)
+    return ChatGroq(model=LLM_MODEL)
