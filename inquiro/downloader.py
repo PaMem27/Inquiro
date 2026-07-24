@@ -1,3 +1,4 @@
+import socket
 from collections.abc import Generator
 from pathlib import Path
 
@@ -6,6 +7,12 @@ import requests
 
 from inquiro.config import PAPERS_DIR
 from inquiro.titles import load_titles, save_titles
+
+# arxiv.Client's search request has no explicit timeout, so a slow or
+# rate-limiting response from export.arxiv.org hangs the download step
+# forever with no error. `requests` falls back to the socket default when no
+# timeout is passed, so setting this makes that call fail instead of hang.
+socket.setdefaulttimeout(30)
 
 
 def download_papers(
