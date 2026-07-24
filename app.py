@@ -150,7 +150,9 @@ if not corpus_ready():
 
         if downloaded + skipped == 0:
             st.error(
-                "No papers were returned by arXiv. Try a different topic or check your connection."
+                "No papers were returned by arXiv. This can happen if arXiv is "
+                "rate-limiting requests from this server (HTTP 429) — wait a "
+                "minute and try again, or try a different topic."
             )
             st.stop()
 

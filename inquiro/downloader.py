@@ -47,8 +47,21 @@ def iter_download_papers(
         max_results=max_results,
         sort_by=arxiv.SortCriterion.Relevance,
     )
+    results = client.results(search)
     try:
-        for index, paper in enumerate(client.results(search), start=1):
+        index = 0
+        while True:
+            try:
+                paper = next(results)
+            except StopIteration:
+                break
+            except arxiv.ArxivError:
+                # arXiv's own client retries HTTP errors (e.g. 429 rate-limit)
+                # a few times with no backoff, then raises. Treat that as "no
+                # more results" so callers see zero papers instead of a crash.
+                break
+            index += 1
+
             short_id = paper.get_short_id()
             dest = papers_dir / f"{short_id}.pdf"
             # Record the title up front so it is captured even for skips/failures.
